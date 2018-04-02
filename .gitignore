@@ -1,0 +1,18 @@
+# files to be ignored by git #
+##############################
+letGitIgnoreMe.txt
+
+# STS (eclipse) project files #
+###############################
+.settings/
+.classpath
+.project
+
+# directories to be ignored by git #
+####################################
+/target/
+bin/
+
+# local git repo to be ignored by git as well #
+###############################################
+.git/
