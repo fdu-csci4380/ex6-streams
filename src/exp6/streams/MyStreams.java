@@ -27,6 +27,11 @@ public class MyStreams {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		myStreams_1();
+		slide_8a_1();
+	}
+	
+	public static void myStreams_1() {
 		// For loop
 		List<Student> students = Arrays.asList(new Student[]{new Student("Veli"),new Student("Ali"),new Student("Abba"), new Student("Bob")});
 		List<String> names =new ArrayList<>();
@@ -81,6 +86,7 @@ public class MyStreams {
 		Arrays.asList("one","two","three").stream().forEach((String str) -> { System.out.println(str);});
 		Arrays.asList("one","two","three").stream().forEach((String str) -> {
 		    System.out.println(str);
+		    System.out.println("bla bla");
 		});
 		
 		// forEach
@@ -92,7 +98,7 @@ public class MyStreams {
 		
 		// filter
 		Arrays.asList("a","ab","abc","abcd").stream().filter(str -> str.length() >= 2).forEach(System.out::println);
-		
+				
 		// collect
 		List<Integer> strLengths = Arrays.asList("a","ab","abc","abcd").stream().map(str -> str.length()).collect(Collectors.toList());
 		
@@ -150,10 +156,83 @@ public class MyStreams {
 		.ifPresent(System.out::println);
 	}
 
+	public Integer sumDeleteMe() {
+		List<Integer> ages = Arrays.asList(10,15,20,24);
+		Integer sumOfAges = 0;
+		for (Integer age : ages) {
+			sumOfAges = Integer.sum(sumOfAges, age);
+		}
+		return sumOfAges;		
+	}
+	
+	public void toStringEquivalentOfForEach(){
+		List<String> strings = Arrays.asList("ilker", "kiris");
+		for (String string : strings) {
+			System.out.println(string);
+		}
+	}
+	
 	public static class Student {
 		private String name;
 		public String getName() { return name; }
 		public Student(String _name) { this.name = _name; }
 		public String toString() { return "name:" + name; }
+	}
+	
+	public enum Gender { MALE, FEMALE }
+	
+	public static class Author {
+		private String name;
+		private int age;
+		private Gender gender;
+		public Author(String _name, int _age, Gender _gender) {
+			this.name = _name; 
+			this.age = _age;
+			this.gender = _gender;
+		}
+		public String getName() { return name; }
+		public int getAge() { return age; }
+		public Gender getGender() {	return gender; }	
+	}
+	
+	public static class Book {
+		private Author author;
+		private String title;
+		public Book(Author _author, String _title) {
+			this.author = _author;
+			this.title = _title;
+		}
+		public Author getAuthor() {	return author;	}
+		public String getTitle() { return title; }
+	}
+	
+	public static List<Book> initializeBooks(){
+		List<Book> books = Arrays.asList(
+				new Book(new Author("ilker", 20, Gender.MALE), "Idiots_1"),
+				new Book(new Author("Amy", 21, Gender.FEMALE), "Idiots_2"),
+				new Book(new Author("Bob", 51, Gender.MALE), "Idiots_3"),
+				new Book(new Author("Gerturde", 56, Gender.FEMALE), "Idiots_4"),
+				new Book(new Author("Allen", 61, Gender.MALE), "Idiots_5"),
+				new Book(new Author("McSusan", 51, Gender.FEMALE), "Idiots_6")	
+		);
+		return books;
+	}
+	
+	public static void slide_8a_1(){
+		List<Book> books = MyStreams.initializeBooks();
+		int sumOfFemaleAuthorsOfAgeLessThan25 =
+		 books.stream()
+//		.map((Book book) -> book.getAuthor())
+//		.map(book -> book.getAuthor())
+		.map(Book::getAuthor)
+		.filter(author -> author.getGender() == Gender.FEMALE)
+		.map(Author::getAge)
+		.filter(age -> age < 25)
+//		.peek(age -> System.out.println(age))
+		.peek(System.out::println)
+//		.reduce(0, (sumValue, currentAge) -> Integer.sum(sumValue, currentAge));
+		.reduce(0, Integer::sum);
+		
+		System.out.println(sumOfFemaleAuthorsOfAgeLessThan25);
 	}
 }
